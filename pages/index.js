@@ -13,6 +13,7 @@ export default function Home() {
     password: "",
   });
   const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleChange = (event) => {
     setState({
@@ -24,12 +25,19 @@ export default function Home() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
-    const result = await register(state);
-    if (result.status === 201) {
+    try {
+      const result = await register(state);
+      if (result.status === 201) {
+        localStorage.setItem('token', result?git.data?.token);
+        setLoading(false);
+        Router.push("/login");
+      }
+    } catch (e) {
       setLoading(false);
-      Router.push("/login");
-    } else {
-      setLoading(false);
+      setErrorMsg(e?.response?.data?.message);
+      setTimeout(() => {
+        setErrorMsg("");
+      }, 3000);
     }
   };
 
@@ -111,8 +119,14 @@ export default function Home() {
                 required
                 onChange={handleChange}
                 pattern="[a-z0-9]{1,15}"
-                title="Password should be digits (0 to 9) or alphabets (a to z)."
+                // title="Password should be digits (0 to 9) or alphabets (a to z)."
               />
+
+              {errorMsg && (
+                <label className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                  {errorMsg}
+                </label>
+              )}
 
               <button
                 type="submit"
