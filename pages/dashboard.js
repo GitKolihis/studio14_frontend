@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import Spinner from "../components/spinner";
 import { search } from "../helpers/api/authentication";
+import Movies from "../components/movies";
 
 export default function Dashboard() {
   const [state, setState] = useState({
     q: "",
   });
-  const [loading, setLoading] = useState(false)
-  const [movies, setMovies] = useState([])
+  const [loading, setLoading] = useState(false);
+  const [movies, setMovies] = useState([]);
 
   const handleChange = (event) => {
     setState({
@@ -21,12 +22,12 @@ export default function Dashboard() {
     try {
       setLoading(true);
       const result = await search(state);
-      // console.log("Search Result:: ", result.data?.data?.result)
-      setMovies(result.data?.data?.result)
-      setLoading(false)
+      console.log("Search Result:: ", result.data?.data?.result);
+      setMovies(result.data?.data?.result);
+      setLoading(false);
     } catch (e) {
       console.log(e);
-      setLoading(false)
+      setLoading(false);
     }
   };
 
@@ -46,14 +47,17 @@ export default function Dashboard() {
                   placeholder="Seach for movie title"
                   onChange={handleChange}
                 />
-                 <button
-                type="submit"
-                className=" ml-3 rounded-full w-full text-white bg-yellow-400 hover:bg-yellow-600 focus:outline-none  focus:ring-yellow-300 font-medium text-sm px-2 py-2.5 text-center mr-2 mb-4 dark:focus:ring-yellow-900"
-              >
-                {loading ? <Spinner /> : "Search Movie"}
-              </button>
+                <button
+                  type="submit"
+                  className=" ml-3 rounded-full w-full text-white bg-yellow-400 hover:bg-yellow-600 focus:outline-none  focus:ring-yellow-300 font-medium text-sm px-2 py-2.5 text-center mr-2 mb-4 dark:focus:ring-yellow-900"
+                >
+                  {loading ? <Spinner /> : "Search Movie"}
+                </button>
               </div>
             </form>
+
+            {movies &&
+              movies.map((data, index) => <Movies key={index} data={data} />)}
           </div>
         </div>
       </div>

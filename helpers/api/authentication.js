@@ -35,10 +35,24 @@ export const search = async (data) => {
     method: "get",
     url: `http://localhost:3000/movieapi/title?title=${data.q}`,
     headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
+      "Content-Type": "application/json",
     },
   };
 
+  const response = await axios(config);
+  return response;
+};
+
+export const addCollection = async (data) => {
+  const config = {
+    method: "post",
+    url: `http://localhost:3000/movies`,
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization" : "Bearer " + localStorage.getItem('token')
+    },
+    data: JSON.stringify(data),
+  };
   const response = await axios(config);
   return response;
 };
