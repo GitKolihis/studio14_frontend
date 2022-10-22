@@ -28,7 +28,7 @@ export default function Home() {
     try {
       const result = await register(state);
       if (result.status === 201) {
-        localStorage.setItem('token', result?git.data?.token);
+        localStorage.setItem('token', result.data?.token);
         setLoading(false);
         Router.push("/login");
       }
