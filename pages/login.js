@@ -28,7 +28,6 @@ export default function Login() {
     try {
       setLoading(true);
       const result = await login(state);
-      console.log("Login: ", result);
       if (result.status === 200 || result.status === 201) {
         Router.push("/dashboard");
       }
